@@ -49,7 +49,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         if (room.getImageUri() != null && !room.getImageUri().isEmpty()) {
             holder.imageViewRoom.setImageURI(Uri.parse(room.getImageUri()));
         } else {
-            holder.imageViewRoom.setImageResource(R.drawable.ic_default_room);
+            holder.imageViewRoom.setImageResource(R.mipmap.ic_launcher);
         }
 
         holder.textViewRoomName.setText(room.getName());
