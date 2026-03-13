@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
 
     @Override
     public void onEdit(Room room, int position) {
-
+        showRoomDialog(room, position);
     }
 
 
