@@ -49,19 +49,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         if (room.getImageUri() != null && !room.getImageUri().isEmpty()) {
             holder.imageViewRoom.setImageURI(Uri.parse(room.getImageUri()));
         } else {
-            int imageResId;
-            switch (room.getId()) {
-                case "R001":
-                    imageResId = R.drawable.phong_101;
-                    break;
-                case "R002":
-                    imageResId = R.drawable.phong_102;
-                    break;
-                default:
-                    imageResId = R.drawable.ic_default_room;
-                    break;
-            }
-            holder.imageViewRoom.setImageResource(imageResId);
+            holder.imageViewRoom.setImageResource(R.drawable.ic_default_room);
         }
 
         holder.textViewRoomName.setText(room.getName());
