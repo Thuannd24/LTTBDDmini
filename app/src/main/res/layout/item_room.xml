@@ -3,17 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginVertical="6dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:strokeWidth="0dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp"
+    app:strokeColor="@color/outline_soft"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="18dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -24,8 +26,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Phòng 101"
-                android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textColor="@color/text_primary"
+                android:textSize="19sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -33,9 +35,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:background="@android:color/holo_green_light"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
+                android:background="@drawable/bg_status_chip"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
                 android:text="Còn trống"
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
@@ -48,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Giá thuê: 2.000.000đ"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/text_secondary"
             android:textSize="16sp" />
 
         <TextView
@@ -57,13 +59,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Người thuê: -"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginVertical="12dp"
-            android:background="#EEEEEE" />
+            android:background="@color/outline_soft" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,20 +76,20 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonEdit"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SỬA"
-                android:textColor="@color/purple_500"
+                android:textColor="@color/primary"
                 app:icon="@android:drawable/ic_menu_edit" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonDelete"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="XÓA"
-                android:textColor="@android:color/holo_red_dark"
+                android:textColor="@color/status_rented"
                 app:icon="@android:drawable/ic_menu_delete" />
         </LinearLayout>
     </LinearLayout>

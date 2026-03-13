@@ -1,6 +1,6 @@
 package com.example.btmini.adapter;
 
-import android.graphics.Color;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,18 +42,20 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     @Override
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
         Room room = roomList.get(position);
+        int availableColor = holder.itemView.getContext().getColor(R.color.status_available);
+        int rentedColor = holder.itemView.getContext().getColor(R.color.status_rented);
         
         holder.textViewRoomName.setText(room.getName());
         holder.textViewRoomPrice.setText("Giá: " + formatter.format(room.getPrice()));
         
         if (room.isRented()) {
             holder.textViewRoomStatus.setText("Đã thuê");
-            holder.textViewRoomStatus.setBackgroundColor(Color.parseColor("#F44336"));
+            holder.textViewRoomStatus.setBackgroundTintList(ColorStateList.valueOf(rentedColor));
             holder.textViewTenantInfo.setVisibility(View.VISIBLE);
             holder.textViewTenantInfo.setText("Người thuê: " + room.getTenantName() + " (" + room.getPhoneNumber() + ")");
         } else {
             holder.textViewRoomStatus.setText("Còn trống");
-            holder.textViewRoomStatus.setBackgroundColor(Color.parseColor("#4CAF50"));
+            holder.textViewRoomStatus.setBackgroundTintList(ColorStateList.valueOf(availableColor));
             holder.textViewTenantInfo.setVisibility(View.GONE);
         }
 
