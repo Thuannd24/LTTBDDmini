@@ -117,7 +117,17 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
     }
     @Override
     public void onDelete(Room room, int position) {
-
+        new AlertDialog.Builder(this)
+        .setTitle("Xóa phòng")
+        .setMessage("Bạn có chắc chắn muốn xóa phòng " + room.getName() + "?")
+        .setPositiveButton("Xóa", (dialog, which) -> {
+            roomList.remove(position);
+            adapter.notifyItemRemoved(position);
+            adapter.notifyItemRangeChanged(position, roomList.size());
+            Toast.makeText(this, "Đã xóa phòng", Toast.LENGTH_SHORT).show();
+        })
+        .setNegativeButton("Hủy", null)
+        .show();
     }
 
     @Override
