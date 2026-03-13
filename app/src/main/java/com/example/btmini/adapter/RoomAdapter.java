@@ -1,6 +1,7 @@
 package com.example.btmini.adapter;
 
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,20 +46,23 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         Room room = roomList.get(position);
         int availableColor = holder.itemView.getContext().getColor(R.color.status_available);
         int rentedColor = holder.itemView.getContext().getColor(R.color.status_rented);
-
-        int imageResId;
-        switch (room.getId()) {
-            case "R001":
-                imageResId = R.drawable.phong_101;
-                break;
-            case "R002":
-                imageResId = R.drawable.phong_102;
-                break;
-            default:
-                imageResId = R.drawable.ic_default_room;
-                break;
+        if (room.getImageUri() != null && !room.getImageUri().isEmpty()) {
+            holder.imageViewRoom.setImageURI(Uri.parse(room.getImageUri()));
+        } else {
+            int imageResId;
+            switch (room.getId()) {
+                case "R001":
+                    imageResId = R.drawable.phong_101;
+                    break;
+                case "R002":
+                    imageResId = R.drawable.phong_102;
+                    break;
+                default:
+                    imageResId = R.drawable.ic_default_room;
+                    break;
+            }
+            holder.imageViewRoom.setImageResource(imageResId);
         }
-        holder.imageViewRoom.setImageResource(imageResId);
 
         holder.textViewRoomName.setText(room.getName());
         holder.textViewRoomPrice.setText("Giá: " + formatter.format(room.getPrice()));
