@@ -9,14 +9,16 @@ public class Room implements Serializable {
     private boolean isRented;
     private String tenantName;
     private String phoneNumber;
+    private String imageUri;
 
-    public Room(String id, String name, double price, boolean isRented, String tenantName, String phoneNumber) {
+    public Room(String id, String name, double price, boolean isRented, String tenantName, String phoneNumber, String imageUri) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.isRented = isRented;
         this.tenantName = tenantName;
         this.phoneNumber = phoneNumber;
+        this.imageUri = imageUri;
     }
 
     // Getters and Setters
@@ -37,4 +39,12 @@ public class Room implements Serializable {
 
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
 }

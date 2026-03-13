@@ -1,13 +1,20 @@
 package com.example.btmini;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
     private List<Room> roomList;
     private FloatingActionButton fabAddRoom;
 
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
+    private Uri selectedImageUri;
+    private ImageView currentImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +45,8 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
 
         roomList = new ArrayList<>();
         // Sample data
-        roomList.add(new Room("R001", "Phòng 101", 1500000, false, "", ""));
-        roomList.add(new Room("R002", "Phòng 102", 2000000, true, "Nguyễn Văn A", "0987654321"));
+        roomList.add(new Room("R001", "Phòng 101", 1500000, false, "", "", null));
+        roomList.add(new Room("R002", "Phòng 102", 2000000, true, "Nguyễn Văn A", "0987654321", null));
 
         recyclerView = findViewById(R.id.recyclerViewRooms);
         fabAddRoom = findViewById(R.id.fabAddRoom);
@@ -43,6 +54,19 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
         adapter = new RoomAdapter(roomList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Uri uri = result.getData().getData();
+                        selectedImageUri = uri;
+                        if (currentImageView != null && uri != null) {
+                            currentImageView.setImageURI(uri);
+                        }
+                    }
+                }
+        );
 
         fabAddRoom.setOnClickListener(v -> showRoomDialog(null, -1));
     }
@@ -58,7 +82,10 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
         CheckBox cbIsRented = view.findViewById(R.id.checkBoxIsRented);
         EditText etTenantName = view.findViewById(R.id.editTextTenantName);
         EditText etPhoneNumber = view.findViewById(R.id.editTextPhoneNumber);
+        ImageView imageViewRoom = view.findViewById(R.id.imageViewRoom);
+        Button buttonChooseImage = view.findViewById(R.id.buttonChooseImage);
 
+        selectedImageUri = null;
         if (room != null) {
             etId.setText(room.getId());
             etId.setEnabled(false);
@@ -67,7 +94,18 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
             cbIsRented.setChecked(room.isRented());
             etTenantName.setText(room.getTenantName());
             etPhoneNumber.setText(room.getPhoneNumber());
+            if (!TextUtils.isEmpty(room.getImageUri())) {
+                selectedImageUri = Uri.parse(room.getImageUri());
+                imageViewRoom.setImageURI(selectedImageUri);
+            }
         }
+
+        buttonChooseImage.setOnClickListener(v -> {
+            currentImageView = imageViewRoom;
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            imagePickerLauncher.launch(intent);
+        });
 
         builder.setPositiveButton(room == null ? "Thêm" : "Cập nhật", (dialog, which) -> {
             String id = etId.getText().toString().trim();
@@ -79,8 +117,9 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
 
             if (validateInput(id, name, priceStr)) {
                 double price = Double.parseDouble(priceStr);
+                String imageUriStr = selectedImageUri != null ? selectedImageUri.toString() : (room != null ? room.getImageUri() : null);
                 if (room == null) {
-                    Room newRoom = new Room(id, name, price, isRented, tenantName, phoneNumber);
+                    Room newRoom = new Room(id, name, price, isRented, tenantName, phoneNumber, imageUriStr);
                     roomList.add(newRoom);
                     adapter.notifyItemInserted(roomList.size() - 1);
                     Toast.makeText(this, "Đã thêm phòng", Toast.LENGTH_SHORT).show();
@@ -90,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
                     room.setRented(isRented);
                     room.setTenantName(tenantName);
                     room.setPhoneNumber(phoneNumber);
+                    room.setImageUri(imageUriStr);
                     adapter.notifyItemChanged(position);
                     Toast.makeText(this, "Đã cập nhật phòng", Toast.LENGTH_SHORT).show();
                 }
