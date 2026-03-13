@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +45,21 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         Room room = roomList.get(position);
         int availableColor = holder.itemView.getContext().getColor(R.color.status_available);
         int rentedColor = holder.itemView.getContext().getColor(R.color.status_rented);
-        
+
+        int imageResId;
+        switch (room.getId()) {
+            case "R001":
+                imageResId = R.drawable.phong_101;
+                break;
+            case "R002":
+                imageResId = R.drawable.phong_102;
+                break;
+            default:
+                imageResId = R.drawable.ic_default_room;
+                break;
+        }
+        holder.imageViewRoom.setImageResource(imageResId);
+
         holder.textViewRoomName.setText(room.getName());
         holder.textViewRoomPrice.setText("Giá: " + formatter.format(room.getPrice()));
         
@@ -77,6 +92,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     public static class RoomViewHolder extends RecyclerView.ViewHolder {
         TextView textViewRoomName, textViewRoomPrice, textViewRoomStatus, textViewTenantInfo;
         MaterialButton buttonEdit, buttonDelete;
+        ImageView imageViewRoom;
 
         public RoomViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,6 +102,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             textViewTenantInfo = itemView.findViewById(R.id.textViewTenantInfo);
             buttonEdit = itemView.findViewById(R.id.buttonEdit);
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
+            imageViewRoom = itemView.findViewById(R.id.imageViewRoom);
         }
     }
 }
