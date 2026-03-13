@@ -1,7 +1,5 @@
 package com.example.btmini;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
     private List<Room> roomList;
     private FloatingActionButton fabAddRoom;
 
-    private ActivityResultLauncher<Intent> imagePickerLauncher;
+    private ActivityResultLauncher<PickVisualMediaRequest> imagePickerLauncher;
     private Uri selectedImageUri;
     private ImageView currentImageView;
 
@@ -56,12 +55,11 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
         recyclerView.setAdapter(adapter);
 
         imagePickerLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        Uri uri = result.getData().getData();
+                new ActivityResultContracts.PickVisualMedia(),
+                uri -> {
+                    if (uri != null) {
                         selectedImageUri = uri;
-                        if (currentImageView != null && uri != null) {
+                        if (currentImageView != null) {
                             currentImageView.setImageURI(uri);
                         }
                     }
@@ -102,9 +100,9 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnRoo
 
         buttonChooseImage.setOnClickListener(v -> {
             currentImageView = imageViewRoom;
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            imagePickerLauncher.launch(intent);
+            imagePickerLauncher.launch(new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build());
         });
 
         builder.setPositiveButton(room == null ? "Thêm" : "Cập nhật", (dialog, which) -> {
